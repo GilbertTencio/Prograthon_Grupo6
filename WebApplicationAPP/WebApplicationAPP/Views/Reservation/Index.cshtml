@@ -1,0 +1,85 @@
+﻿@model IEnumerable<WebApplicationAPP.Models.Reservation>
+@using WebApplicationAPP.Models
+@{
+    ViewData["Title"] = "Reservas";
+    var users = ViewBag.Users as IEnumerable<User>;
+    var labs = ViewBag.Laboratories as IEnumerable<Laboratory>;
+}
+
+<h2>Crear Reserva</h2>
+
+<form asp-action="Create" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <label>Usuario</label>
+            <select name="idUsuario" class="form-control">
+                @foreach (var u in users)
+                {
+                    <option value="@u.IdUser">@u.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label>Laboratorio</label>
+            <select name="idLaboratorio" class="form-control">
+                @foreach (var l in labs)
+                {
+                    <option value="@l.IdLaboratory">@l.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label>Fecha</label>
+            <input type="date" name="fecha" class="form-control" required />
+        </div>
+
+        <div class="col-md-2">
+            <label>Hora</label>
+            <input type="time" name="hora" class="form-control" required />
+        </div>
+
+        <div class="col-md-2 mt-4">
+            <button type="submit" class="btn btn-primary">Reservar</button>
+        </div>
+    </div>
+</form>
+
+<hr />
+
+<h2>Lista de Reservas</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Laboratorio</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.User?.Name</td>
+                <td>@r.Laboratory?.Name</td>
+                <td>@r.Date.ToShortDateString()</td>
+                <td>@r.Time</td>
+                <td>@r.Status</td>
+                <td>
+                    @if (r.Status == ReservationStatus.Activa)
+                    {
+                        <form asp-action="Cancel" method="post">
+                            <input type="hidden" name="id" value="@r.IdReservation" />
+                            <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
