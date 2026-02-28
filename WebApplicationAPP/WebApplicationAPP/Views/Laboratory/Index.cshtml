@@ -1,0 +1,63 @@
+﻿@model IEnumerable<WebApplicationAPP.Models.Laboratory>
+
+@{
+    ViewData["Title"] = "Laboratorios";
+}
+
+<h2>Registrar Laboratorio</h2>
+
+<form asp-action="Create" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <label>Nombre</label>
+            <input type="text" name="Name" class="form-control" required />
+        </div>
+
+        <div class="col-md-3">
+            <label>Capacidad</label>
+            <input type="number" name="Capacity" class="form-control" min="1" required />
+        </div>
+
+        <div class="col-md-4">
+            <label>Responsable</label>
+            <input type="text" name="Responsible" class="form-control" required />
+        </div>
+
+        <div class="col-md-1 mt-4">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </div>
+</form>
+
+<hr />
+
+<h2>Lista de Laboratorios</h2>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Capacidad</th>
+            <th>Responsable</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lab in Model)
+        {
+            <tr>
+                <td>@lab.Name</td>
+                <td>@lab.Capacity</td>
+                <td>@lab.Responsible</td>
+                <td>
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@lab.IdLaboratory" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
