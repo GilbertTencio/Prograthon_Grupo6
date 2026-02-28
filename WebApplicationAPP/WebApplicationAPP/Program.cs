@@ -1,10 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplicationAPP.Data;
+using WebApplicationAPP.Repositories;
+using WebApplicationAPP.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+// Repositories en memoria
+builder.Services.AddSingleton<ILaboratoryRepository, InMemoryLaboratoryRepository>();
+builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
+builder.Services.AddSingleton<IReservationRepository, InMemoryReservationRepository>();
+
+// Servicios de negocio
+builder.Services.AddScoped<LaboratoryService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ReservationService>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
